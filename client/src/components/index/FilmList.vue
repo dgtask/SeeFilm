@@ -46,14 +46,16 @@ watchEffect(() => {
   let isMobile = /mobile|android|iphone|ipad|phone/i.test(userAgent)
   // 如果是PC, 为防止flex布局最后一行元素不足出现错位, 使用空元素补齐list
   let c = isMobile ? 3 : props.col ? props.col : 0
-  let l: any = props.list
+  let l: any = props.list || []
   let len = l.length
   d.width = isMobile ? 31 : Math.floor(100 / c)
   if (len % c != 0) {
     for (let i = 0; i < c - len % c; i++) {
-      let temp: any = {...l[0] as any}
-      temp.id = -99
-      l.push(temp)
+      let temp: any = l[0] ? {...l[0]} : null
+      if (temp) {
+        temp.id = -99
+        l.push(temp)
+      }
     }
   }
   d.list = l
